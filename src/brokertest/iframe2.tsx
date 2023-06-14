@@ -1,6 +1,6 @@
 import {StrictMode, useState, useEffect, useRef} from "react"
 import {createRoot} from "react-dom/client"
-import {useMessageBroker} from "../hooks"
+import {useMessageBroker, useStorageManager} from "../hooks"
 
 const root = createRoot(document.getElementById("root")!)
 
@@ -8,9 +8,12 @@ const Frame = (): JSX.Element => {
   const [message, setMessage] = useState("")
 
   const {publish, subscribe, lastEvent} = useMessageBroker({topic: "test"})
+  const {getItem} = useStorageManager()
 
   useEffect(() => {
-    subscribe()
+    subscribe("test", (event:any)=>{
+      console.log(getItem("test"))
+    })
   }, [])
 
   const sendMessage = () => {

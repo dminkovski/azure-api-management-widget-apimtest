@@ -10,10 +10,7 @@ import {
   ChannelEvent,
 } from "../../../api-management-custom-widget-tools/sdk/apimanagement/api-management-custom-widgets-tools/src/messagebroker"
 
-import{
-  StorageManager
-} from "../../../api-management-custom-widget-tools/sdk/apimanagement/api-management-custom-widgets-tools/src/storagemanager"
-
+import {StorageManager} from "../../../api-management-custom-widget-tools/sdk/apimanagement/api-management-custom-widgets-tools/src/storagemanager"
 
 export const useValues = () => useContext(WidgetDataContext).values
 export const useEditorValues = () => useContext(WidgetDataContext).data.values
@@ -55,6 +52,7 @@ export interface UseMessageBrokerProps {
   topic: string
   callback?: (event: ChannelEvent) => void
 }
+
 export interface IUseMessageBroker {
   publish: (message: string, topicOverride?: string) => void
   subscribe: (topicOverride?: string, callbackOverride?: (event: ChannelEvent | any) => void) => boolean
@@ -96,11 +94,11 @@ export function useMessageBroker({topic = "default", callback}: UseMessageBroker
   }
 }
 
-export interface IUseStorageManager{
-  getItem: (key:string)=> string
-  setItem: (key:string, value:string) => void
+export interface IUseStorageManager {
+  getItem: (key: string) => string
+  setItem: (key: string, value: string) => void
 }
-export function useStorageManager(){
+export function useStorageManager() {
   const storageRef = useRef<StorageManager | null>(null)
 
   useEffect(() => {
@@ -109,15 +107,14 @@ export function useStorageManager(){
     }
   }, [])
 
-  const getItem = (key:string) => {
+  const getItem = (key: string) => {
     return storageRef?.current?.getItem(key)
   }
-  const setItem = (key:string, value:string) => {
+  const setItem = (key: string, value: string) => {
     storageRef?.current?.setItem(key, value)
   }
   return {
     getItem,
-    setItem
+    setItem,
   }
-  
 }
