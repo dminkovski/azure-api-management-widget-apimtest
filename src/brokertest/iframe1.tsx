@@ -4,6 +4,10 @@ import {
   MessageBroker,
   ChannelEvent,
 } from "../../../../api-management-custom-widget-tools/sdk/apimanagement/api-management-custom-widgets-tools/src/messagebroker"
+import{
+  StorageManager
+} from "../../../../api-management-custom-widget-tools/sdk/apimanagement/api-management-custom-widgets-tools/src/storagemanager"
+
 
 const root = createRoot(document.getElementById("root")!)
 
@@ -12,9 +16,12 @@ const Frame = (): JSX.Element => {
   const [message, setMessage] = useState("")
   const [received, setReceived] = useState("")
 
+  const storageRef = useRef<StorageManager | null>(null)
+
   useEffect(() => {
     if (!brokerRef.current) {
       brokerRef.current = new MessageBroker()
+      storageRef.current = new StorageManager()
       const success = brokerRef?.current?.subscribe("test", (event: ChannelEvent) => {
         setReceived(`Received from ${event.sender}: ${event.message}`)
       })
@@ -23,6 +30,7 @@ const Frame = (): JSX.Element => {
   }, [])
   const sendMessage = () => {
     brokerRef?.current?.publish("test", message)
+    storageRef?.current?.setItem("test","msft")
   }
   return (
     <div>
