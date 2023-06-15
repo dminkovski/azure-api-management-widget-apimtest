@@ -1,10 +1,7 @@
 import {StrictMode, useState, useEffect, useRef} from "react"
 import {createRoot} from "react-dom/client"
-import {
-  MessageBroker,
-  ChannelEvent,
-} from "../../../../api-management-custom-widget-tools/sdk/apimanagement/api-management-custom-widgets-tools/src/messagebroker"
-import {StorageManager} from "../../../../api-management-custom-widget-tools/sdk/apimanagement/api-management-custom-widgets-tools/src/storagemanager"
+import {MessageBroker, ChannelEvent} from "@widget-tools/messagebroker"
+import {StorageManager} from "@widget-tools/storagemanager"
 import {useSettings} from "./custom-hook"
 
 const root = createRoot(document.getElementById("root")!)

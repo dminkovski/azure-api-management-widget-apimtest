@@ -5,15 +5,9 @@ import {Values} from "./values"
 import {SecretsContext, WidgetDataContext} from "./providers"
 import axios from "axios"
 
-import {
-  MessageBroker,
-  ChannelEvent,
-} from "../../../api-management-custom-widget-tools/sdk/apimanagement/api-management-custom-widgets-tools/src/messagebroker"
+import {MessageBroker, ChannelEvent} from "@widget-tools/messagebroker"
 
-import {
-  StorageManager,
-  StorageType,
-} from "../../../api-management-custom-widget-tools/sdk/apimanagement/api-management-custom-widgets-tools/src/storagemanager"
+import {StorageManager, StorageType} from "@widget-tools/storagemanager"
 
 export const useValues = () => useContext(WidgetDataContext).values
 export const useEditorValues = () => useContext(WidgetDataContext).data.values
@@ -124,44 +118,5 @@ export function useStorageManager(storageType?: StorageType) {
     getItem,
     setItem,
     clear,
-  }
-}
-
-/** Further Examples */
-
-export interface IUseSettings {
-  settings: any | null
-  update: (settings: any) => void
-  reset: () => void
-}
-export function useSettings() {
-  const TOPIC = "widget-settings"
-  const [settings, setSettings] = useState(null)
-  const {getItem, setItem, clear} = useStorageManager()
-  const {publish, subscribe} = useMessageBroker({topic: TOPIC})
-
-  const update = (settings: any) => {
-    setItem(TOPIC, settings)
-    publish(settings)
-  }
-
-  const reset = () => {
-    clear()
-    publish("")
-  }
-  useEffect(() => {
-    subscribe(TOPIC, (event: any) => {
-      const item = getItem(TOPIC)
-      setSettings(item)
-    })
-
-    const item = getItem(TOPIC)
-    setSettings(item)
-  }, [])
-
-  return {
-    settings,
-    update,
-    reset,
   }
 }

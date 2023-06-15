@@ -11,6 +11,12 @@ export default defineConfig(() => ({
       height: "300px",
     }),
   ],
+  resolve: {
+    alias: {
+      "@widget-tools":
+        "C:/Users/dminkovski/Development/api-management-custom-widget-tools/sdk/apimanagement/api-management-custom-widgets-tools/src",
+    },
+  },
   base: "",
   server: {
     port: 3000,
