@@ -4,7 +4,13 @@ import {wrapWidget} from "./src/vite-plugins"
 
 // https://vitejs.dev/config/
 export default defineConfig(() => ({
-  plugins: [react(), wrapWidget()],
+  plugins: [
+    react(),
+    wrapWidget({
+      width: "300px",
+      height: "300px",
+    }),
+  ],
   base: "",
   server: {
     port: 3000,

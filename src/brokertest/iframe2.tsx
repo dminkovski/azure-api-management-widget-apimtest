@@ -1,6 +1,6 @@
 import {StrictMode, useState, useEffect, useRef} from "react"
 import {createRoot} from "react-dom/client"
-import {useMessageBroker, useStorageManager} from "../hooks"
+import {useMessageBroker, useStorageManager, useSettings} from "../hooks"
 
 const root = createRoot(document.getElementById("root")!)
 
@@ -9,9 +9,10 @@ const Frame = (): JSX.Element => {
 
   const {publish, subscribe, lastEvent} = useMessageBroker({topic: "test"})
   const {getItem} = useStorageManager()
+  const {settings} = useSettings()
 
   useEffect(() => {
-    subscribe("test", (event:any)=>{
+    subscribe("test", (event: any) => {
       console.log(getItem("test"))
     })
   }, [])
@@ -22,6 +23,7 @@ const Frame = (): JSX.Element => {
 
   return (
     <div>
+      <h1>iFrame2</h1>
       <input type="text" value={message} onChange={event => setMessage(event.target.value)} />
       <button
         onClick={() => {
@@ -30,8 +32,16 @@ const Frame = (): JSX.Element => {
       >
         Send
       </button>
-      <h1>iFrame2</h1>
-      {lastEvent?.message}
+      <hr />
+      <span>
+        <b>Received: </b>
+        {lastEvent?.message}
+      </span>
+      <br />
+      <span>
+        <b>Language: </b>
+        {JSON.stringify(settings)}
+      </span>
     </div>
   )
 }

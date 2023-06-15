@@ -28,8 +28,6 @@ export const SecretsProvider: React.FC<{children?: React.ReactNode; targetModule
   const [secrets, setSecrets] = useState<Secrets | undefined>()
 
   useEffect(() => {
-    console.log(targetModule)
-    console.log(askForSecrets)
     askForSecrets(targetModule)
       .then((value: any) => setSecrets(value))
       .catch(console.error)
