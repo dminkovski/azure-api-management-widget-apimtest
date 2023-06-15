@@ -8,7 +8,15 @@ export function wrapWidget(settings?: WrapperSettings) {
   let counter = -1
 
   function getSettings() {
-    const defaultSettings = {width: "100%", height: "100%", params: "test=true", port: 3000}
+    const jsonData = {
+      values: {
+        label1: "widget",
+        instanceId: 1,
+        environment: "test",
+      },
+    }
+    const editorData = encodeURIComponent(JSON.stringify(jsonData))
+    const defaultSettings = {width: "100%", height: "100%", params: `editorData=${editorData}`, port: 3000}
     const appliedSettings = {...defaultSettings, ...settings}
     return appliedSettings
   }
@@ -19,7 +27,7 @@ export function wrapWidget(settings?: WrapperSettings) {
       counter++
       if (ctx.path.includes("index") && counter % 2 == 0) {
         const {width, height, params, port} = getSettings()
-        return `<body style="margin: auto;text-align: center;"><title>Widget-Wrapper</title><iframe style="width:${width};height:${height}" src="http//:localhost:${port}?${params}" /></body>`
+        return `<body style="margin: auto;text-align: center;"><script type="module" src="/src/wrapper.js"></script><title>Widget-Wrapper</title><iframe style="width:${width};height:${height}" src="http//:localhost:${port}?${params}" /></body>`
       }
       return html
     },
