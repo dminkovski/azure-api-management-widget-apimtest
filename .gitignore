@@ -92,7 +92,7 @@ examples/.vs
 examples/bin
 .vs
 TestResults/*
-.vscode/*
+#.vscode/*
 ./**/.vscode/*
 
 # Node #
