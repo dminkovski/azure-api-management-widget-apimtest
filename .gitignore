@@ -103,7 +103,7 @@ TestResults/*
 **/lib/**/*.js.map
 **/*Bundle.js
 **/*Bundle.js.map
-**/package-lock.json
+#**/package-lock.json
 **/yarn.lock
 npm-debug.log.*
 azure_error
