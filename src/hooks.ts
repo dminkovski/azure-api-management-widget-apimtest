@@ -118,3 +118,33 @@ export function useStorageManager() {
     setItem,
   }
 }
+
+/** Further Examples */
+
+export interface IUseSettings {
+  settings: any | null
+  update: (settings: any) => void
+}
+export function useSettings() {
+  const TOPIC = "widget-settings"
+  const [settings, setSettings] = useState(null)
+  const {getItem, setItem} = useStorageManager()
+  const {publish, subscribe} = useMessageBroker({topic: TOPIC})
+
+  const update = (settings: any) => {
+    setItem(TOPIC, settings)
+    publish(settings)
+  }
+
+  useEffect(() => {
+    subscribe(TOPIC, (event: any) => {
+      const item = getItem(TOPIC)
+      setSettings(item)
+    })
+  }, [])
+
+  return {
+    settings,
+    update,
+  }
+}

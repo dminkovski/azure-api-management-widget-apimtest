@@ -1,9 +1,10 @@
 import {defineConfig} from "vite"
 import react from "@vitejs/plugin-react"
+import {wrapWidget} from "./src/vite-plugins"
 
 // https://vitejs.dev/config/
 export default defineConfig(() => ({
-  plugins: [react()],
+  plugins: [react(), wrapWidget()],
   base: "",
   server: {
     port: 3000,
@@ -15,8 +16,8 @@ export default defineConfig(() => ({
     rollupOptions: {
       input: {
         index: "./index.html",
-        editor: "./editor.html",
         wrapper: "./wrapper.html",
+        editor: "./editor.html",
         iframe1: "./iframe1.html",
         iframe2: "./iframe2.html",
       },
