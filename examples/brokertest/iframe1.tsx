@@ -5,7 +5,7 @@ import {
   ChannelEvent,
 } from "../../../../api-management-custom-widget-tools/sdk/apimanagement/api-management-custom-widgets-tools/src/messagebroker"
 import {StorageManager} from "../../../../api-management-custom-widget-tools/sdk/apimanagement/api-management-custom-widgets-tools/src/storagemanager"
-import {useSettings} from "../hooks"
+import {useSettings} from "./custom-hook"
 
 const root = createRoot(document.getElementById("root")!)
 

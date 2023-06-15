@@ -14,7 +14,6 @@ export default defineConfig(() => ({
   base: "",
   server: {
     port: 3000,
-    //open: "https://apimreacttesting.developer.azure-api.net/?MS_APIM_CW_localhost_port=3000",
   },
   build: {
     outDir: "dist",
@@ -22,10 +21,7 @@ export default defineConfig(() => ({
     rollupOptions: {
       input: {
         index: "./index.html",
-        wrapper: "./wrapper.html",
         editor: "./editor.html",
-        iframe1: "./iframe1.html",
-        iframe2: "./iframe2.html",
       },
     },
   },
