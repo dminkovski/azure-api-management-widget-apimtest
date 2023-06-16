@@ -88,9 +88,11 @@ const Widget1 = (): JSX.Element => {
       .catch((e: Error) => {
         console.log(e)
         setAckMessage(e.message)
+        ackbrokerRef?.current.close()
       })
     if (response && response.message) {
       setAckMessage(response.message)
+      await ackbrokerRef?.current.close()
     }
   }
 

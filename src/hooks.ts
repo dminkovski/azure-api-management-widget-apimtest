@@ -55,6 +55,7 @@ export interface UseMessageBrokerProps {
 export interface IUseMessageBroker {
   publish: (message: string, topicOverride?: string) => void
   subscribe: (topicOverride?: string, callbackOverride?: (event: ChannelEvent | any) => void) => boolean
+  close: () => Promise<void>
   lastEvent: ChannelEvent | null
 }
 export function useMessageBroker({
@@ -89,10 +90,14 @@ export function useMessageBroker({
   const publish = (message: string, topicOverride?: string) => {
     brokerRef?.current?.publish({topic: topicOverride || topic, message})
   }
+  const close = (): Promise<void> => {
+    return brokerRef?.current?.close()
+  }
 
   return {
     publish,
     subscribe,
+    close,
     lastEvent,
   }
 }
@@ -135,6 +140,7 @@ export interface UseAckBrokerProps {
 export interface IUseAckBroker {
   send: (topic: string, message: string) => void
   received: (event: AckEvent) => void
+  close: () => Promise<void>
 }
 
 export function useAckBroker({channelName, settings}: UseAckBrokerProps): IUseAckBroker {
@@ -153,8 +159,13 @@ export function useAckBroker({channelName, settings}: UseAckBrokerProps): IUseAc
     ackBrokerRef?.current?.received(event)
   }
 
+  const close = (): Promise<void> => {
+    return ackBrokerRef?.current?.close()
+  }
+
   return {
     send,
     received,
+    close,
   }
 }

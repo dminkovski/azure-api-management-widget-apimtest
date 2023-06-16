@@ -19,7 +19,7 @@ const Widget2 = (): JSX.Element => {
 
   const {publish, subscribe, lastEvent} = useMessageBroker({topic: "test"})
   const {received} = useAckBroker({channelName: "ack-channel"})
-  const {subscribe: ackSubscribe} = useMessageBroker({
+  const {subscribe: ackSubscribe, close} = useMessageBroker({
     channelName: "ack-channel",
   })
   const {settings} = useSettings()
@@ -45,6 +45,7 @@ const Widget2 = (): JSX.Element => {
           ackSubscribe("ack", (event: any) => {
             setAckMessage(event.message)
             received({...event, message: "Widget 2 received it thanks"})
+            close()
           })
         }
         sendCount--
