@@ -15,6 +15,7 @@ const Widget1 = (): JSX.Element => {
   const [message, setMessage] = useState("")
   const [received, setReceived] = useState("")
   const [ackMessage, setAckMessage] = useState("")
+  const [count, setCount] = useState(4)
 
   const brokerRef = useRef<MessageBroker | null>(null)
   const storageRef = useRef<StorageManager | null>(null)
@@ -28,8 +29,10 @@ const Widget1 = (): JSX.Element => {
     if (!brokerRef.current) {
       // Message Broker for publishing and subscribing
       brokerRef.current = new MessageBroker()
+
       // Storage Manager for storing data in sessionStorage or localStorage
       storageRef.current = new StorageManager()
+
       // AckBroker for verified sending of messages to other widgets
       ackbrokerRef.current = new AckBroker()
 
@@ -40,6 +43,8 @@ const Widget1 = (): JSX.Element => {
 
       // Example of settings storage
       storageRef?.current?.setItem("storage-test", "widget1 loaded")
+
+      demoAck()
 
       console.log(`Widget 1 loaded & subscribed : ${success}`)
     }
@@ -55,6 +60,19 @@ const Widget1 = (): JSX.Element => {
     update({
       language,
     })
+  }
+
+  const demoAck = () => {
+    let sendCount = 4
+    const interval = setInterval(() => {
+      setCount(sendCount)
+      if (sendCount == 0) {
+        clearInterval(interval)
+        verifiedSend()
+        setAckMessage("SENT.")
+      }
+      sendCount--
+    }, 1000)
   }
 
   // Send a message with ack (includes retries) and with callback
@@ -76,6 +94,7 @@ const Widget1 = (): JSX.Element => {
   return (
     <div>
       <h1>Widget1</h1>
+      <h4>Message Broker</h4>
       <input type="text" value={message} onChange={event => setMessage(event.target.value)} />
       <button
         onClick={() => {
@@ -84,7 +103,13 @@ const Widget1 = (): JSX.Element => {
       >
         Publish
       </button>
-      <br />
+      <br /> <br />
+      <span>
+        <b>Received: </b>
+        {received}
+      </span>
+      <hr />
+      <h4>Custom Hook</h4>
       <label>Set Language: </label>
       <select onChange={event => setLanguage(event.target.value)}>
         <option>English</option>
@@ -98,19 +123,8 @@ const Widget1 = (): JSX.Element => {
         Reset
       </button>
       <hr />
-      <span>
-        <b>Received: </b>
-        {received}
-      </span>
-      <br />
-      <h5>Send with Ack (while Widget 2 shows "false")</h5>
-      <button
-        onClick={() => {
-          verifiedSend()
-        }}
-      >
-        Send With Ack
-      </button>
+      <h4>Ack broker</h4>
+      <h5>Sending with Ack in {count} seconds</h5>
       <br />
       {ackMessage}
     </div>

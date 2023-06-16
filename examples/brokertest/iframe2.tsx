@@ -11,6 +11,7 @@ const root = createRoot(document.getElementById("root")!)
  */
 const Widget2 = (): JSX.Element => {
   const [message, setMessage] = useState("")
+  const [count, setCount] = useState(6)
   const [readyForAck, setReadyForAck] = useState(false)
 
   const init = useRef(false)
@@ -27,12 +28,21 @@ const Widget2 = (): JSX.Element => {
 
       // Mimic late initialize for asynchrunous Ack Test
       // Increase Timeout from 3000 to 10000 to see error
-      setTimeout(() => {
-        setReadyForAck(true)
-        subscribe("ack", (event: any) => {
-          received({...event, message: "Widget 2 received it thanks"})
-        })
-      }, 3000)
+      let sendCount = 6
+      const interval = setInterval(() => {
+        setCount(sendCount)
+        if (sendCount == 0) {
+          clearInterval(interval)
+
+          // Show we have subscribed
+          setReadyForAck(true)
+          // Subscribe to Topic "ack" using Message Broker and callback with received from AckBroker
+          subscribe("ack", (event: any) => {
+            received({...event, message: "Widget 2 received it thanks"})
+          })
+        }
+        sendCount--
+      }, 1000)
 
       console.log(`Widget 2 loaded`)
     }
@@ -45,6 +55,7 @@ const Widget2 = (): JSX.Element => {
   return (
     <div>
       <h1>Widget2</h1>
+      <h4>Message Broker</h4>
       <input type="text" value={message} onChange={event => setMessage(event.target.value)} />
       <button
         onClick={() => {
@@ -53,19 +64,26 @@ const Widget2 = (): JSX.Element => {
       >
         Send
       </button>
-      <hr />
+      <br />
+      <br />
       <span>
         <b>Received: </b>
-        {lastEvent?.message}
+        {lastEvent && lastEvent?.message}
       </span>
-      <br />
+      <hr />
+      <h4>Custom Hook</h4>
       <span>
         <b>Language: </b>
         {JSON.stringify(settings)}
       </span>
+      <hr />
+      <h4>Ack broker</h4>
+      <b>Listener initializes in {count} seconds: </b>
       <br />
-      <b>Ready For Ack: </b>
       {`${readyForAck}`}
+      <br />
+      <br />
+      {lastEvent && lastEvent?.message}
     </div>
   )
 }

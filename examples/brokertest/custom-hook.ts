@@ -6,6 +6,8 @@ export interface IUseSettings {
   update: (settings: any) => void
   reset: () => void
 }
+
+// Example Hook: Use the existing Hooks to build your own custom Hook
 export function useSettings() {
   const TOPIC = "widget-settings"
   const [settings, setSettings] = useState(null)
