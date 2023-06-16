@@ -1,4 +1,4 @@
-import {StrictMode, useState, useEffect, useRef} from "react"
+import React, {StrictMode, useState, useEffect, useRef} from "react"
 import {createRoot} from "react-dom/client"
 import {MessageBroker, ChannelEvent} from "@widget-tools/messagebroker"
 import {StorageManager} from "@widget-tools/storagemanager"
@@ -34,7 +34,10 @@ const Widget1 = (): JSX.Element => {
       storageRef.current = new StorageManager()
 
       // AckBroker for verified sending of messages to other widgets
-      ackbrokerRef.current = new AckBroker()
+      ackbrokerRef.current = new AckBroker("ack-channel", {
+        retryAttempts: 3,
+        retryIntervalMS: 1500,
+      })
 
       // Subscribe to Topic "test" to receive messages from widget2
       const success = brokerRef?.current?.subscribe("test", (event: ChannelEvent) => {

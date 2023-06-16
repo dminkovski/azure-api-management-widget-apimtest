@@ -1,4 +1,4 @@
-import {StrictMode, useState, useEffect, useRef} from "react"
+import React, {StrictMode, useState, useEffect, useRef} from "react"
 import {createRoot} from "react-dom/client"
 import {useAckBroker, useMessageBroker, useStorageManager} from "../../src/hooks"
 import {useSettings} from "./custom-hook"
@@ -11,19 +11,24 @@ const root = createRoot(document.getElementById("root")!)
  */
 const Widget2 = (): JSX.Element => {
   const [message, setMessage] = useState("")
+  const [ackMessage, setAckMessage] = useState("")
   const [count, setCount] = useState(6)
   const [readyForAck, setReadyForAck] = useState(false)
 
   const init = useRef(false)
 
   const {publish, subscribe, lastEvent} = useMessageBroker({topic: "test"})
-  const {received} = useAckBroker()
+  const {received} = useAckBroker({channelName: "ack-channel"})
+  const {subscribe: ackSubscribe} = useMessageBroker({
+    channelName: "ack-channel",
+  })
   const {settings} = useSettings()
 
   useEffect(() => {
     if (!init.current) {
       init.current = true
 
+      // Subscribe to topic "test" so lastEvent gets populated
       subscribe()
 
       // Mimic late initialize for asynchrunous Ack Test
@@ -33,11 +38,12 @@ const Widget2 = (): JSX.Element => {
         setCount(sendCount)
         if (sendCount == 0) {
           clearInterval(interval)
-
           // Show we have subscribed
           setReadyForAck(true)
+
           // Subscribe to Topic "ack" using Message Broker and callback with received from AckBroker
-          subscribe("ack", (event: any) => {
+          ackSubscribe("ack", (event: any) => {
+            setAckMessage(event.message)
             received({...event, message: "Widget 2 received it thanks"})
           })
         }
@@ -83,7 +89,7 @@ const Widget2 = (): JSX.Element => {
       {`${readyForAck}`}
       <br />
       <br />
-      {lastEvent && lastEvent?.message}
+      {ackMessage}
     </div>
   )
 }

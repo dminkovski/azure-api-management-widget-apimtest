@@ -54,6 +54,14 @@ To get started with the custom widget project boilerplate, follow these steps:
 
 8. Follow the deployment instructions in the next section to deploy your custom widget to the API Management Developer Portal.
 
+## Examples
+
+You can find working examples in the /examples folder.
+If you want to view the multi-widget example, follow these steps:
+
+1. Run the local server
+2. Open http://localhost:3000/examples/widgets.html to view
+
 ## Testing
 
 You can test the widget inside the portal using your local server:

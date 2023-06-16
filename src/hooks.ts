@@ -8,7 +8,7 @@ import axios from "axios"
 import {MessageBroker, ChannelEvent} from "@widget-tools/messagebroker"
 
 import {StorageManager, StorageType} from "@widget-tools/storagemanager"
-import {AckBroker, AckEvent} from "@widget-tools/ackbroker"
+import {AckBroker, AckEvent, AckSettings} from "@widget-tools/ackbroker"
 
 export const useValues = () => useContext(WidgetDataContext).values
 export const useEditorValues = () => useContext(WidgetDataContext).data.values
@@ -47,7 +47,8 @@ export function useAPIRequest(): (url: string) => Promise<Response> {
 }
 
 export interface UseMessageBrokerProps {
-  topic: string
+  channelName?: string | null
+  topic?: string
   callback?: (event: ChannelEvent) => void
 }
 
@@ -56,13 +57,17 @@ export interface IUseMessageBroker {
   subscribe: (topicOverride?: string, callbackOverride?: (event: ChannelEvent | any) => void) => boolean
   lastEvent: ChannelEvent | null
 }
-export function useMessageBroker({topic = "default", callback}: UseMessageBrokerProps): IUseMessageBroker {
+export function useMessageBroker({
+  channelName = null,
+  topic = "default",
+  callback,
+}: UseMessageBrokerProps): IUseMessageBroker {
   const brokerRef = useRef<MessageBroker | null>(null)
   const [lastEvent, setLastEvent] = useState<ChannelEvent | null>(null)
 
   useEffect(() => {
     if (!brokerRef.current) {
-      brokerRef.current = new MessageBroker()
+      brokerRef.current = new MessageBroker(channelName)
     }
   }, [])
 
@@ -122,17 +127,22 @@ export function useStorageManager(storageType?: StorageType) {
   }
 }
 
+export interface UseAckBrokerProps {
+  channelName?: string
+  settings?: AckSettings
+}
+
 export interface IUseAckBroker {
   send: (topic: string, message: string) => void
   received: (event: AckEvent) => void
 }
 
-export function useAckBroker(): IUseAckBroker {
+export function useAckBroker({channelName, settings}: UseAckBrokerProps): IUseAckBroker {
   const ackBrokerRef = useRef<AckBroker | null>(null)
 
   useEffect(() => {
     if (!ackBrokerRef.current) {
-      ackBrokerRef.current = new AckBroker()
+      ackBrokerRef.current = new AckBroker(channelName, settings)
     }
   }, [])
 
