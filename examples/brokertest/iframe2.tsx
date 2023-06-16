@@ -9,29 +9,32 @@ const root = createRoot(document.getElementById("root")!)
  * Example using the provided Hooks
  * @returns JSX.Element
  */
-const Frame = (): JSX.Element => {
+const Widget2 = (): JSX.Element => {
   const [message, setMessage] = useState("")
+  const [readyForAck, setReadyForAck] = useState(false)
+
   const init = useRef(false)
 
   const {publish, subscribe, lastEvent} = useMessageBroker({topic: "test"})
   const {received} = useAckBroker()
-  const {getItem} = useStorageManager()
   const {settings} = useSettings()
 
   useEffect(() => {
     if (!init.current) {
       init.current = true
 
-      subscribe("test", (event: any) => {
-        console.log(getItem("test"))
-      })
+      subscribe()
 
+      // Mimic late initialize for asynchrunous Ack Test
+      // Increase Timeout from 3000 to 10000 to see error
       setTimeout(() => {
+        setReadyForAck(true)
         subscribe("ack", (event: any) => {
-          console.log("iframe 2 received", event)
-          received(event)
+          received({...event, message: "Widget 2 received it thanks"})
         })
       }, 3000)
+
+      console.log(`Widget 2 loaded`)
     }
   }, [])
 
@@ -41,7 +44,7 @@ const Frame = (): JSX.Element => {
 
   return (
     <div>
-      <h1>iFrame2</h1>
+      <h1>Widget2</h1>
       <input type="text" value={message} onChange={event => setMessage(event.target.value)} />
       <button
         onClick={() => {
@@ -60,12 +63,15 @@ const Frame = (): JSX.Element => {
         <b>Language: </b>
         {JSON.stringify(settings)}
       </span>
+      <br />
+      <b>Ready For Ack: </b>
+      {`${readyForAck}`}
     </div>
   )
 }
 
 root.render(
   <StrictMode>
-    <Frame />
+    <Widget2 />
   </StrictMode>
 )

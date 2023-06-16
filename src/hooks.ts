@@ -136,8 +136,8 @@ export function useAckBroker(): IUseAckBroker {
     }
   }, [])
 
-  const send = (topic: string, message: string): void => {
-    ackBrokerRef?.current?.send({topic, message})
+  const send = (topic: string, message: string): Promise<AckEvent | Error> => {
+    return ackBrokerRef?.current?.send({topic, message})
   }
   const received = (event: AckEvent): void => {
     ackBrokerRef?.current?.received(event)
