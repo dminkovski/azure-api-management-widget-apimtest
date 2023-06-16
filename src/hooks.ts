@@ -8,6 +8,7 @@ import axios from "axios"
 import {MessageBroker, ChannelEvent} from "@widget-tools/messagebroker"
 
 import {StorageManager, StorageType} from "@widget-tools/storagemanager"
+import {AckBroker, AckEvent} from "@widget-tools/ackbroker"
 
 export const useValues = () => useContext(WidgetDataContext).values
 export const useEditorValues = () => useContext(WidgetDataContext).data.values
@@ -81,7 +82,7 @@ export function useMessageBroker({topic = "default", callback}: UseMessageBroker
   }
 
   const publish = (message: string, topicOverride?: string) => {
-    brokerRef?.current?.publish(topicOverride || topic, message)
+    brokerRef?.current?.publish({topic: topicOverride || topic, message})
   }
 
   return {
@@ -118,5 +119,32 @@ export function useStorageManager(storageType?: StorageType) {
     getItem,
     setItem,
     clear,
+  }
+}
+
+export interface IUseAckBroker {
+  send: (topic: string, message: string) => void
+  received: (event: AckEvent) => void
+}
+
+export function useAckBroker(): IUseAckBroker {
+  const ackBrokerRef = useRef<AckBroker | null>(null)
+
+  useEffect(() => {
+    if (!ackBrokerRef.current) {
+      ackBrokerRef.current = new AckBroker()
+    }
+  }, [])
+
+  const send = (topic: string, message: string): void => {
+    ackBrokerRef?.current?.send({topic, message})
+  }
+  const received = (event: AckEvent): void => {
+    ackBrokerRef?.current?.received(event)
+  }
+
+  return {
+    send,
+    received,
   }
 }
