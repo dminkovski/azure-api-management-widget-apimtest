@@ -14,7 +14,7 @@ export default defineConfig(() => ({
   resolve: {
     alias: {
       "@widget-tools":
-        "C:/Users/dminkovski/Development/api-management-custom-widget-tools/sdk/apimanagement/api-management-custom-widgets-tools/src",
+        "./src/tools",
     },
   },
   base: "",
