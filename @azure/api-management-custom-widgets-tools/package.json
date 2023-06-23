@@ -1,0 +1,39 @@
+{
+  "name": "@azure/api-management-custom-widgets-tools",
+  "version": "1.0.0-beta.2",
+  "author": "Microsoft Corporation",
+  "license": "MIT",
+  "sdk-type": "client",
+  "homepage": "https://github.com/Azure/azure-sdk-for-js/blob/main/sdk/apimanagement/api-management-custom-widgets-tools/README.md",
+  "repository": "github:Azure/azure-sdk-for-js",
+  "browser": {
+    "./dist-esm/src/node/deploy.js": "./dist-esm/src/node/deploy.browser.js"
+  },
+  "bugs": {
+    "url": "https://github.com/Azure/azure-sdk-for-js/issues"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "keywords": [
+    "azure",
+    "cloud",
+    "typescript",
+    "apimanagement",
+    "developer-portal"
+  ],
+  "sideEffects": false,
+  "main": "src/index.ts",
+  "dependencies": {
+    "@azure/identity": "^2.1.0",
+    "@azure-rest/core-client": "^1.0.0-beta.10",
+    "@azure/storage-blob": "^12.9.0",
+    "broadcast-channel": "^5.1.0",
+    "mime": "^3.0.0",
+    "mustache": "^4.2.0",
+    "prettier": "^2.5.1",
+    "tslib": "^2.2.0",
+    "rollup": "^2.66.1",
+    "@rollup/plugin-node-resolve": "^13.1.3"
+  }
+}

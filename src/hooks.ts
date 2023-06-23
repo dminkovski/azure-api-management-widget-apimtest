@@ -1,14 +1,25 @@
-import {useCallback, useContext, useEffect, useRef, useState} from "react"
-import {OnChange, onChangeWithOrigin} from "@azure/api-management-custom-widgets-tools"
+import {
+  useCallback, 
+  useContext, 
+  useEffect, 
+  useRef, 
+  useState
+} from "react"
+import {
+  OnChange, 
+  onChangeWithOrigin,
+  MessageBroker, 
+  ChannelEvent,
+  StorageManager, 
+  StorageType,
+  AckBroker, 
+  AckEvent, 
+  AckSettings
+} from "@azure/api-management-custom-widgets-tools"
 
 import {Values} from "./values"
 import {SecretsContext, WidgetDataContext} from "./providers"
 import axios from "axios"
-
-import {MessageBroker, ChannelEvent} from "@widget-tools/messagebroker"
-
-import {StorageManager, StorageType} from "@widget-tools/storagemanager"
-import {AckBroker, AckEvent, AckSettings} from "@widget-tools/ackbroker"
 
 export const useValues = () => useContext(WidgetDataContext).values
 export const useEditorValues = () => useContext(WidgetDataContext).data.values
@@ -47,7 +58,7 @@ export function useAPIRequest(): (url: string) => Promise<Response> {
 }
 
 export interface UseMessageBrokerProps {
-  channelName?: string | null
+  channelName?: string | undefined
   topic?: string
   callback?: (event: ChannelEvent) => void
 }
@@ -59,7 +70,7 @@ export interface IUseMessageBroker {
   lastEvent: ChannelEvent | null
 }
 export function useMessageBroker({
-  channelName = null,
+  channelName,
   topic = "default",
   callback,
 }: UseMessageBrokerProps): IUseMessageBroker {
@@ -91,7 +102,7 @@ export function useMessageBroker({
     brokerRef?.current?.publish({topic: topicOverride || topic, message})
   }
   const close = (): Promise<void> => {
-    return brokerRef?.current?.close()
+    return brokerRef?.current?.close() ?? Promise.reject()
   }
 
   return {
@@ -153,14 +164,14 @@ export function useAckBroker({channelName, settings}: UseAckBrokerProps): IUseAc
   }, [])
 
   const send = (topic: string, message: string): Promise<AckEvent | Error> => {
-    return ackBrokerRef?.current?.send({topic, message})
+    return ackBrokerRef?.current?.send({topic, message}) ?? Promise.reject()
   }
   const received = (event: AckEvent): void => {
     ackBrokerRef?.current?.received(event)
   }
 
   const close = (): Promise<void> => {
-    return ackBrokerRef?.current?.close()
+    return ackBrokerRef?.current?.close() ?? Promise.reject()
   }
 
   return {

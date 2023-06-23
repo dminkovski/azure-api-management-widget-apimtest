@@ -1,5 +1,5 @@
 import {useState, useEffect} from "react"
-import {useMessageBroker, useStorageManager} from "../../src/hooks"
+import {useMessageBroker, useStorageManager} from "../../../src/hooks"
 
 export interface IUseSettings {
   settings: any | null

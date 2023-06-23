@@ -1,6 +1,6 @@
 import React, {StrictMode, useState, useEffect, useRef} from "react"
 import {createRoot} from "react-dom/client"
-import {useAckBroker, useMessageBroker, useStorageManager} from "../../src/hooks"
+import {useAckBroker, useMessageBroker, useStorageManager} from "../../../src/hooks"
 import {useSettings} from "./custom-hook"
 
 const root = createRoot(document.getElementById("root")!)

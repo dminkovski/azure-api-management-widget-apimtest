@@ -1,8 +1,7 @@
 import React, {StrictMode, useState, useEffect, useRef} from "react"
 import {createRoot} from "react-dom/client"
-import {MessageBroker, ChannelEvent} from "@widget-tools/messagebroker"
-import {StorageManager} from "@widget-tools/storagemanager"
-import {AckBroker} from "@widget-tools/ackbroker"
+import {MessageBroker, ChannelEvent, StorageManager, AckBroker} from "@azure/api-management-custom-widgets-tools"
+
 
 import {useSettings} from "./custom-hook"
 
@@ -88,11 +87,11 @@ const Widget1 = (): JSX.Element => {
       .catch((e: Error) => {
         console.log(e)
         setAckMessage(e.message)
-        ackbrokerRef?.current.close()
+        ackbrokerRef?.current?.close()
       })
     if (response && response.message) {
       setAckMessage(response.message)
-      await ackbrokerRef?.current.close()
+      await ackbrokerRef?.current?.close()
     }
   }
 

@@ -44,7 +44,7 @@ export class AckBroker {
    * Send Message with Acknowledgment
    * @param event
    */
-  public send(event: ChannelEvent): Promise<any> {
+  public send(event: ChannelEvent | any): Promise<any> {
     return new Promise<AckEvent | string>((resolve, reject) => {
       const uniqueId = this.generateUniqueId();
       const ackEvent = {

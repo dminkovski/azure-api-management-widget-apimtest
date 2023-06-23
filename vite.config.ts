@@ -1,6 +1,6 @@
 import {defineConfig} from "vite"
 import react from "@vitejs/plugin-react"
-import {wrapWidget} from "./src/vite-plugins"
+import {wrapWidget} from "./utils/vite-plugins"
 
 // https://vitejs.dev/config/
 export default defineConfig(() => ({
@@ -11,12 +11,6 @@ export default defineConfig(() => ({
       height: "300px",
     }),
   ],
-  resolve: {
-    alias: {
-      "@widget-tools":
-        "./src/tools",
-    },
-  },
   base: "",
   server: {
     port: 3000,
