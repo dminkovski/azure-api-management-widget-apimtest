@@ -22,6 +22,15 @@ Before using this project, ensure that you have the following prerequisites inst
 
 ## Getting Started
 
+**Developer Notes**
+The source files of the `@azure/api-management-custom-widgets-tools` package are temporarily included in this repo.  Since it's a separate package, it must be built first before the steps below will work.  
+- Open a terminal window in the `@azure/api-management-custom-widgets-tools` folder.
+- Run `npm install`
+- Run `npm run build`
+- The first time you do this you may receive an error.  The Build script attempts to update the packages for the widget project (you'll see why below)
+
+- When making changes to the widget tools package code, ("src" folder), you must again run `npm run build` to compile and roll-up the code and update the dependencies for the widget project.
+
 To get started with the custom widget project boilerplate, follow these steps:
 
 1. Clone this repository to your local development environment.

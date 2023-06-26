@@ -1,10 +1,9 @@
-const {deployNodeJS} = require("@azure/api-management-custom-widgets-tools");
-const deployConfig = require('./deploy.json');
+const { deployNodeJS } = require('@azure/api-management-custom-widgets-tools');
+const deployConfig = require('./deploy.config.json');
 
-let serviceInformation = { ...deployConfig };
-
-let name = deployConfig?.name;
-let fallbackConfigPath = deployConfig?.fallbackConfigPath;
+const serviceInformation = deployConfig?.serviceInformation;
+const name = deployConfig?.name
+const fallbackConfigPath = deployConfig?.fallbackConfigPath
 
 const yargs = require('yargs')
     .example(`node ./deploy ^ \r

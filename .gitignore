@@ -51,7 +51,9 @@ jspm_packages/
 
 # Output of 'npm pack'
 *.tgz
-
+# Allow the pre-packed dev-tool package 
+# //TODO - Remove before PR
+!azure-dev-tool-1.0.0.tgz
 # Yarn Integrity file
 .yarn-integrity
 

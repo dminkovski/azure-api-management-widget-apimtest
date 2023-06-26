@@ -23,7 +23,29 @@
     "developer-portal"
   ],
   "sideEffects": false,
-  "main": "src/index.ts",
+  "files": [
+    "dist/",
+    "dist-esm/",
+    "types/",
+    "LICENSE"
+  ],
+  "main": "dist/index.js",
+  "module": "dist-esm/index.js",
+  "types": "types/index.d.ts",
+  "scripts": {
+    "build": "npm run clean && tsc -p . && dev-tool run bundle --browser-test=false && npm run update-widget",
+    "clean": "rimraf dist* types *.tgz *.log",
+    "update-widget": "cd ../.. && npm update @azure/api-management-custom-widgets-tools",
+    "format": "prettier --write --config ../../../.prettierrc.json --ignore-path ../../../.prettierignore --ignore-path ./.prettierignore \"src/**/*.ts\" \"test/**/*.ts\" \"*.{js,json}\"",
+    "pack": "npm pack 2>&1"
+  },
+  "devDependencies": {
+    "@azure/dev-tool": "file:../azure-dev-tool-1.0.0.tgz",
+    "@types/mime": "^3.0.1",
+    "prettier": "^2.5.1",
+    "rimraf": "^3.0.0",
+    "typescript": "~5.0.0"
+  },
   "dependencies": {
     "@azure/identity": "^2.1.0",
     "@azure-rest/core-client": "^1.0.0-beta.10",
