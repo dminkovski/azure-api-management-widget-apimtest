@@ -2,16 +2,16 @@ import {StrictMode} from "react"
 import {createRoot} from "react-dom/client"
 
 import "./styles/app.scss"
+import App from "./app"
 import {SecretsProvider, WidgetDataProvider} from "./providers"
-import KeyvaultAccess from "./app/keyvault"
 
 const root = createRoot(document.getElementById("root")!)
 root.render(
   <StrictMode>
     <WidgetDataProvider>
       <SecretsProvider targetModule="app">
-        <KeyvaultAccess />
+        <App />
       </SecretsProvider>
     </WidgetDataProvider>
-  </StrictMode>
+  </StrictMode>,
 )

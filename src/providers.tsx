@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react"
 import {
+  askForSecrets,
   getValues,
   getWidgetData,
   Secrets,
   TargetModule,
-  askForSecrets,
 } from "@azure/api-management-custom-widgets-tools"
 import {Values, valuesDefault} from "./values"
 
@@ -21,21 +21,18 @@ export const SecretsContext = React.createContext<Secrets>({
   apiVersion: "",
   managementApiUrl: "",
 })
-export const SecretsProvider: React.FC<{children?: React.ReactNode; targetModule: TargetModule}> = ({
-  children,
-  targetModule,
-}) => {
+export const SecretsProvider: React.FC<{children?: React.ReactNode; targetModule: TargetModule}> = (
+  {children, targetModule},
+) => {
   const [secrets, setSecrets] = useState<Secrets | undefined>()
 
   useEffect(() => {
     askForSecrets(targetModule)
-      .then((value: any) => setSecrets(value))
+      .then(value => setSecrets(value))
       .catch(console.error)
   }, [targetModule])
 
   return secrets ? (
     <SecretsContext.Provider value={secrets}>{children}</SecretsContext.Provider>
-  ) : (
-    <div className="loading"></div>
-  )
+  ) : <div className="loading"></div>
 }

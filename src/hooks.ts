@@ -19,42 +19,24 @@ import {
 
 import {Values} from "./values"
 import {SecretsContext, WidgetDataContext} from "./providers"
-import axios from "axios"
 
 export const useValues = () => useContext(WidgetDataContext).values
 export const useEditorValues = () => useContext(WidgetDataContext).data.values
 export const useSecrets = () => useContext(SecretsContext)
 
 export function useOnChange(): OnChange<Values> {
-  const {
-    data: {instanceId},
-  } = useContext(WidgetDataContext)
+  const {data: {instanceId}} = useContext(WidgetDataContext)
   return useCallback(values => onChangeWithOrigin("*", instanceId, values), [instanceId])
 }
 
 export function useRequest(): (url: string) => Promise<Response> {
   const secrets = useSecrets()
 
-  return useCallback(
-    url =>
-      fetch(
-        `${secrets.managementApiUrl}${url}?api-version=${secrets.apiVersion}`,
-        secrets.token ? {headers: {Authorization: secrets.token}} : undefined
-      ),
-    [secrets]
-  )
-}
-
-export function useAPIRequest(): (url: string) => Promise<Response> {
-  const secrets = useSecrets()
-
-  let init: any = {
-    method: "GET",
-  }
-  if (secrets.token) {
-    init.headers = {Authorization: secrets.token}
-  }
-  return useCallback(url => axios.get(`https://apiwidgettest.azure-api.net${url}?api-version=7.4`, init), [secrets])
+  return useCallback(url =>
+    fetch(
+      `${secrets.managementApiUrl}${url}?api-version=${secrets.apiVersion}`,
+      secrets.token ? {headers: {Authorization: secrets.token}} : undefined,
+    ), [secrets])
 }
 
 export interface UseMessageBrokerProps {
