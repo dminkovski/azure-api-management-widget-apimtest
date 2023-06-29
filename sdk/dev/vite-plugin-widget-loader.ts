@@ -3,8 +3,8 @@ import { ViteDevServer, IndexHtmlTransformResult, HtmlTagDescriptor } from "vite
 import { ValuesCommon } from "@azure/api-management-custom-widgets-tools";
 import { WidgetWrapperOptions, defaultOptions } from './widget-wrapper'
 import { getWidgetConfig } from '../utils/common.js'
-import fs from 'fs';
-import path from 'path'
+import * as fs from 'fs';
+import * as path from 'path'
 
 
 
@@ -41,6 +41,7 @@ export function wrapWidget<Values extends ValuesCommon>(options: WidgetWrapperOp
       const vite = ctx.server as ViteDevServer;
       try {
         //TODO: fix this to handle query string params
+        //need a better way to see what's being loaded
         if (url == '/' && !framed) {
           //framed = true
           const settings = getSettings();

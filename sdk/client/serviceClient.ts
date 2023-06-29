@@ -10,7 +10,8 @@ export class DeveloperPortalTokenCredential implements TokenCredential {
 
     getToken(_scopes: string | string[], _options?: GetTokenOptions): Promise<AccessToken | null> {
         return askForSecrets("app")
-        return Promise.resolve(this.token);
+     //TODO: token resolver, with refresh if possible
+     //override BearerTokenPolcy
       }
 
   }

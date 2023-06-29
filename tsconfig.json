@@ -18,6 +18,7 @@
   },
   "include": [
     "src", 
+    //TODO: sort out browser vs node includes.
     //"sdk/client", 
     //temporary remove with PR
     "@azure/api-management-custom-widgets-tools",
