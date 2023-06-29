@@ -7,10 +7,12 @@
     "host": "vite --host",
     "preview": "vite preview",
     "build": "tsc && vite build",
-    "deploy": "npm run build && node ./utils/deploy/deploy.js"
+    "deploy": "npm run build && node ./sdk/deploy/deploy.js"
   },
   "dependencies": {
     "@azure/api-management-custom-widgets-tools": "file:./@azure/api-management-custom-widgets-tools",
+    "@azure/arm-apimanagement": "^9.0.0",
+    "@azure/core-auth": "^1.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

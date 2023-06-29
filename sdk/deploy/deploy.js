@@ -1,5 +1,5 @@
 const { deployNodeJS } = require('@azure/api-management-custom-widgets-tools');
-const deployConfig = require('./deploy.config.json');
+const deployConfig = require('../../deployConfig.json');
 
 const serviceInformation = deployConfig?.serviceInformation;
 const name = deployConfig?.name

@@ -1,0 +1,11 @@
+{
+  "serviceInformation": {
+    "resourceId": "/subscriptions/55d8ae77-2cb9-4d2b-b3ee-1a5cb53b71e2/resourceGroups/APIMTestingRG/providers/Microsoft.ApiManagement/service/apiWidgetTest",
+    "managementApiEndpoint": "https://management.azure.com"
+  },
+  "name": "apimtest",
+  "fallbackConfigPath": "./static/config.msapim.json",
+  "managementApiUrl": "https://lester-apim.management.azure-api.net/subscriptions/000/resourceGroups/000/providers/Microsoft.ApiManagement/service/lester-apim",
+  "managementApiVersion": "2022-04-01-preview",
+  "supportAdminPath": true
+}

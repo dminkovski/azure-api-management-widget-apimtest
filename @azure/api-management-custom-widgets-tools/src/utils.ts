@@ -153,6 +153,7 @@ export type TargetModule = "app" | "editor";
  * Secrets needed for communication with Dev Portal back-end
  */
 export type Secrets = {
+  parentLocation: string,
   managementApiUrl: string;
   apiVersion: string;
   userId?: string;

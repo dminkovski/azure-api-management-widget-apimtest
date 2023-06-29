@@ -16,6 +16,12 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["src", "@azure/api-management-custom-widgets-tools", "utils/dev/wrapper.js", "utils/dev/vite-plugin-widget-wrapper.ts"],
+  "include": [
+    "src", 
+    //"sdk/client", 
+    //temporary remove with PR
+    "@azure/api-management-custom-widgets-tools",
+    "sdk"
+  ],
   "references": [{"path": "./tsconfig.node.json"}]
 }

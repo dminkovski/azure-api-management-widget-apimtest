@@ -1,6 +1,6 @@
 import {defineConfig} from "vite"
 import react from "@vitejs/plugin-react"
-import {wrapWidget} from "./utils/dev/vite-plugin-widget-wrapper"
+import { wrapWidget } from "./sdk/dev/vite-plugin-widget-loader"
 
 // https://vitejs.dev/config/
 export default defineConfig(() => ({
@@ -9,6 +9,8 @@ export default defineConfig(() => ({
     wrapWidget({
       width: "300px",
       height: "300px",
+      developerPortalUrl: "https://lester-apim.developer.azure-api.net/",
+      portalStyles: true
     }),
   ],
   base: "",
