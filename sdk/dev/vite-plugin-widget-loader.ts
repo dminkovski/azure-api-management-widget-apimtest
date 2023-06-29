@@ -1,26 +1,40 @@
 
-import { ViteDevServer, IndexHtmlTransformResult, HtmlTagDescriptor  } from "vite";
-import {WrapperSettings} from './widget-wrapper'
+import { ViteDevServer, IndexHtmlTransformResult, HtmlTagDescriptor } from "vite";
+import { ValuesCommon } from "@azure/api-management-custom-widgets-tools";
+import { WidgetWrapperOptions, defaultOptions } from './widget-wrapper'
+import { getWidgetConfig } from '../utils/common.js'
+import fs from 'fs';
+import path from 'path'
 
-export function wrapWidget(settings?: WrapperSettings) {
+
+
+export function wrapWidget<Values extends ValuesCommon>(options: WidgetWrapperOptions, widgetValues: Values) {
   let framed = false
 
   function getSettings() {
-    const jsonData = {
-      values: {
-        label1: "widget",
-        instanceId: 1,
-        environment: "test",
-      },
+    const widgetConfig = getWidgetConfig()
+
+    const editorData = {
+      values: widgetValues,
+      instanceId: `${widgetConfig.name}_local`,
+      environment: "local"
     }
-    const editorData = encodeURIComponent(JSON.stringify(jsonData))
-    const defaultSettings = { width: "100%", height: "100%", params: `editorData=${editorData}`, port: 3000 }
-    const appliedSettings = { ...defaultSettings, ...settings }
-    return appliedSettings
+
+    let port = 3000;
+
+    const extendedOptions = 
+    {
+      name: widgetConfig.name,
+      instanceId: editorData.instanceId,
+      src: `http//:localhost:${port}?editorData=${encodeURIComponent(JSON.stringify(editorData))}`
+    }
+
+    return { ...defaultOptions, ...options, ...extendedOptions }
   }
 
   return {
     name: 'wrap-widget',
+    //enforce: 'post',
     //apply: 'serve',
     async transformIndexHtml(html: any, ctx: any) {
       const url = ctx.originalUrl
@@ -28,26 +42,36 @@ export function wrapWidget(settings?: WrapperSettings) {
       try {
         //TODO: fix this to handle query string params
         if (url == '/' && !framed) {
-          framed = true
-          //TODO replace fetch with fs
-          const template =await fetch('http://localhost:3000/widget-page.html')
+          //framed = true
+          const settings = getSettings();
+
+          const template = fs.readFileSync(
+            path.resolve('./sdk/dev/widget-page.html'),
+            'utf-8',
+          )
+
           let transform = {
-            html:  await template.text(),
+            html: template,
             tags: [] as HtmlTagDescriptor[]
           }
-          
+          if (settings.portalStyles) {
+            transform.tags.push({
+              tag: "link",
+              attrs: {
+                rel: "stylesheet",
+                type: "text/css",
+                href: new URL('/styles/theme.css', settings.developerPortalUrl).toString()
+              },
+              injectTo: "head"
+            })
+          }
+
           transform.tags.push({
-             tag: "link",
-             attrs: { rel: "stylesheet", type: "text/css", href: `${""}/styles/theme.css` },
-             injectTo: "head"
-           })
-      
-           transform.tags.push({
             tag: "script",
-            injectTo: "head",
-            children: `${getSettings()}` //todo this needs to serialize
+            injectTo: "body-prepend",
+            children: `options = ${JSON.stringify(settings)}`
           })
-        
+
           return transform;
         }
         return html

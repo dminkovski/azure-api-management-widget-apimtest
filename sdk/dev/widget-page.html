@@ -5,16 +5,30 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+    <script>let options = {};</script>
 </head>
 
 <body>
-    <script type="module">
-        import init from "./sdk/dev/widget-wrapper"
-        
-
-    </script>
     <title>Widget-Wrapper</title>
-    <!-- <iframe allow="{{iframeSandboxAllows}}" style="width:{{settings.width}};height:{{settings.height}}" src="http//:localhost:{{settings.port}}?${{settings.params}}" > -->
-</body>
+    <iframe></iframe>
+    <script type="module" defer>
+        import {
+            init, 
+            iframeSandboxAllows, 
+            iframeAllows
+        } from "./sdk/dev/widget-wrapper"
 
+        init(options)
+
+        //configure the iframe via DOM here instead of vite
+        //to avoid load race condition
+        let iframe = document.getElementsByTagName('iframe')[0]
+        iframe.id = options.instanceId
+        iframe.name = options.name
+        iframe.src = options.src
+        iframe.style = `width:${options.width}};height:${options.height}`
+        iframe.sandbox = iframeSandboxAllows
+        iframe.allow = iframeAllows
+    </script>
+</body>
 </html>

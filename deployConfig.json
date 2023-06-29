@@ -4,8 +4,5 @@
     "managementApiEndpoint": "https://management.azure.com"
   },
   "name": "apimtest",
-  "fallbackConfigPath": "./static/config.msapim.json",
-  "managementApiUrl": "https://lester-apim.management.azure-api.net/subscriptions/000/resourceGroups/000/providers/Microsoft.ApiManagement/service/lester-apim",
-  "managementApiVersion": "2022-04-01-preview",
-  "supportAdminPath": true
+  "fallbackConfigPath": "./static/config.msapim.json"
 }
